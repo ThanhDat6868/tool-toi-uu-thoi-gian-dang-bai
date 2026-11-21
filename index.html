@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công cụ tối ưu thời gian đăng bài mạng xã hội</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8fafc; }
+        input, select { outline: none; }
+        .heat-cell {
+            min-height: 34px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform .15s;
+        }
+        .heat-cell:hover {
+            outline: 2px solid #2563eb;
+            transform: scale(1.06);
+            z-index: 2;
+        }
+        .platform-card:has(input:checked) {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+
+<header class="bg-white border-b">
+    <div class="max-w-6xl mx-auto px-4 py-5">
+        <h1 class="text-2xl font-bold text-blue-700">
+            Social Media Timing
+        </h1>
+        <p class="text-sm text-gray-500 mt-1">
+            Công cụ tối ưu thời gian đăng bài mạng xã hội
+        </p>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-8">
+
+    <section class="text-center mb-8">
+        <h2 class="text-3xl font-bold mb-3">
+            Tìm giờ vàng đăng bài mạng xã hội
+        </h2>
+        <p class="text-gray-600">
+            Lập lịch đăng bài phù hợp với nền tảng và múi giờ khán giả.
+        </p>
+    </section>
+
+    <!-- VÍ DỤ -->
+    <section class="bg-white border rounded-xl p-5 mb-6">
+        <h3 class="font-bold mb-3">Thử ví dụ nhanh</h3>
+        <div class="flex flex-wrap gap-2">
+            <button onclick="loadExample('instagram')"
+                class="bg-pink-50 text-pink-700 px-4 py-2 rounded-lg text-sm">
+                📸 Instagram
+            </button>
+            <button onclick="loadExample('linkedin')"
+                class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm">
+                💼 LinkedIn
+            </button>
+            <button onclick="loadExample('tiktok')"
+                class="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg text-sm">
+                🎵 TikTok
+            </button>
+            <button onclick="loadExample('youtube')"
+                class="bg-red-50 text-red-700 px-4 py-2 rounded-lg text-sm">
+                ▶️ YouTube
+            </button>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- CẤU HÌNH -->
+        <section class="lg:col-span-2 bg-white border rounded-xl p-5 sm:p-6">
+
+            <h3 class="text-lg font-bold mb-4">
+                1. Chọn nền tảng mạng xã hội
+            </h3>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+
+                <label class="platform-card border rounded-lg p-3 cursor-pointer">
+                    <input type="checkbox" name="platform" value="instagram" checked>
+                    <span class="ml-1">📸 Instagram</span>
+                </label>
+
+                <label class="platform-card border rounded-lg p-3 cursor-pointer">
+                    <input type="checkbox" name="platform" value="facebook" checked>
+                    <span class="ml-1">🌐 Facebook</span>
+                </label>
+
+                <label class="platform-card border rounded-lg p-3 cursor-pointer">
+                    <input type="checkbox" name="platform" value="tiktok">
+                    <span class="ml-1">🎵 TikTok</span>
+                </label>
+
+                <label class="platform-card border rounded-lg p-3 cursor-pointer">
+                    <input type="checkbox" name="platform" value="x">
+                    <span class="ml-1">𝕏 Twitter / X</span>
+                </label>
+
+                <label class="platform-card border rounded-lg p-3 cursor-pointer">
+                    <input type="checkbox" name="platform" value="linkedin">
+                    <span class="ml-1">💼 LinkedIn</span>
+                </label>
+
+                <label class="platform-card border rounded-lg p-3 cursor-pointer">
+                    <input type="checkbox" name="platform" value="youtube">
+                    <span class="ml-1">▶️ YouTube</span>
+                </label>
+
+            </div>
+
+            <div class="border-t my-6"></div>
+
+            <h3 class="text-lg font-bold mb-4">
+                2. Cài đặt múi giờ
+            </h3>
+
+            <div class="space-y-4">
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Múi giờ của khán giả chính
+                    </label>
+                    <select id="audienceZone"
+                        class="w-full border rounded-lg p-3">
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">
+                        Múi giờ của bạn
+                    </label>
+                    <select id="myZone"
+                        class="w-full border rounded-lg p-3">
+                    </select>
+                </div>
+
+                <div class="border rounded-lg p-4">
+                    <label class="flex items-center gap-2 font-medium text-sm">
+                        <input type="checkbox" id="useSecond">
+                        Thêm múi giờ khán giả thứ hai
+                    </label>
+
+                    <div id="secondZoneArea" class="hidden mt-4 space-y-3">
+                        <div>
+                            <label class="block text-sm mb-2">
+                                Múi giờ thứ hai
+                            </label>
+                            <select id="secondZone"
+                                class="w-full border rounded-lg p-3">
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <label>Tỷ lệ khán giả ở múi giờ thứ hai</label>
+                                <b id="secondPercent" class="text-blue-700">30%</b>
+                            </div>
+                            <input type="range" id="secondShare"
+                                min="0" max="100" value="30"
+                                class="w-full accent-blue-600">
+                            <p class="text-xs text-gray-500 mt-1">
+                                Phần còn lại thuộc múi giờ khán giả chính.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t my-6"></div>
+
+            <h3 class="text-lg font-bold mb-4">
+                3. Tần suất đăng bài
+            </h3>
+
+            <label class="block text-sm font-medium mb-2">
+                Số bài đăng mỗi tuần cho mỗi nền tảng
+            </label>
+
+            <select id="postsPerWeek"
+                class="w-full border rounded-lg p-3">
+                <option value="1">1 bài / tuần</option>
+                <option value="2">2 bài / tuần</option>
+                <option value="3" selected>3 bài / tuần</option>
+                <option value="4">4 bài / tuần</option>
+                <option value="5">5 bài / tuần</option>
+                <option value="6">6 bài / tuần</option>
+                <option value="7">7 bài / tuần</option>
+            </select>
+
+            <button onclick="generateSchedule()"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl mt-6">
+                🔍 Tìm thời gian tốt nhất
+            </button>
+
+            <button onclick="resetForm()"
+                class="w-full bg-gray-100 hover:bg-gray-200 py-3 rounded-lg mt-3 text-sm">
+                Đặt lại cài đặt
+            </button>
+
+        </section>
+
+        <!-- HƯỚNG DẪN -->
+        <aside class="space-y-5">
+
+            <div class="bg-white border rounded-xl p-5">
+                <h3 class="font-bold text-lg mb-3">
+                    Cách sử dụng
+                </h3>
+                <ol class="text-sm text-gray-600 space-y-3 list-decimal pl-5 leading-6">
+                    <li>Chọn nền tảng muốn đăng bài.</li>
+                    <li>Chọn múi giờ của khán giả.</li>
+                    <li>Chọn múi giờ hiện tại của bạn.</li>
+                    <li>Chọn số bài đăng mỗi tuần.</li>
+                    <li>Nhấn tìm thời gian tốt nhất.</li>
+                </ol>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-100 rounded-xl p-5">
+                <h3 class="font-bold text-blue-800 mb-3">
+                    Tại sao cần chọn múi giờ?
+                </h3>
+                <p class="text-sm text-blue-900 leading-7">
+                    Khán giả ở các quốc gia khác nhau có giờ sinh hoạt khác nhau.
+                    Một khung giờ phù hợp ở Mỹ có thể là nửa đêm tại Việt Nam.
+                    Chuyển đổi múi giờ giúp bạn lên lịch chính xác hơn.
+                </p>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                <h3 class="font-bold text-amber-800 mb-2">
+                    Lưu ý
+                </h3>
+                <p class="text-sm text-amber-900 leading-6">
+                    Khung giờ chỉ mang tính tham khảo theo mô hình tương tác
+                    chung. Thời điểm tốt nhất thực tế cần được kiểm tra bằng
+                    dữ liệu phân tích của chính tài khoản bạn.
+                </p>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- KẾT QUẢ -->
+    <section id="resultSection"
+        class="hidden mt-8 space-y-6">
+
+        <div class="bg-white border rounded-xl p-5 sm:p-6">
+
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+                <div>
+                    <h3 class="text-2xl font-bold">
+                        Lịch đăng bài đề xuất
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Thời gian hiển thị theo múi giờ của bạn
+                    </p>
+                </div>
+
+                <button onclick="copySchedule()"
+                    class="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
+                    Sao chép lịch
+                </button>
+            </div>
+
+            <div id="recommendations" class="space-y-5"></div>
+
+        </div>
+
+        <div class="bg-white border rounded-xl p-5 sm:p-6">
+            <h3 class="text-xl font-bold mb-2">
+                Bản đồ nhiệt tương tác
+            </h3>
+            <p class="text-sm text-gray-500 mb-5">
+                Màu đậm hơn thể hiện điểm tương tác dự kiến cao hơn.
+                Nhấn vào một ô để xem thông tin khung giờ.
+            </p>
+
+            <div class="flex flex-wrap gap-3 text-xs mb-4">
+                <span class="flex items-center gap-1">
+                    <span class="w-4 h-4 rounded bg-slate-100"></span> Thấp
+                </span>
+                <span class="flex items-center gap-1">
+                    <span class="w-4 h-4 rounded bg-blue-200"></span> Trung bình
+                </span>
+                <span class="flex items-center gap-1">
+                    <span class="w-4 h-4 rounded bg-blue-500"></span> Cao
+                </span>
+                <span class="flex items-center gap-1">
+                    <span class="w-4 h-4 rounded bg-blue-800"></span> Rất cao
+                </span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <div id="heatmap" class="min-w-[700px]"></div>
+            </div>
+
+            <div id="heatInfo"
+                class="hidden mt-4 bg-blue-50 rounded-lg p-4 text-sm text-blue-900">
+            </div>
+        </div>
+
+        <div class="bg-white border rounded-xl p-5 sm:p-6">
+            <h3 class="font-bold text-lg mb-3">
+                Tổng kết lịch đăng
+            </h3>
+            <div id="summaryInfo"
+                class="text-sm text-gray-600 leading-7"></div>
+        </div>
+
+    </section>
+
+    <section class="bg-white border rounded-xl p-6 mt-8">
+        <h3 class="font-bold text-lg mb-3">
+            Mẹo tối ưu thời gian đăng bài
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
+            <div>
+                <div class="text-2xl mb-2">📊</div>
+                <b>Theo dõi dữ liệu</b>
+                <p class="text-gray-600 mt-2">
+                    So sánh lượt xem, lượt thích và bình luận sau mỗi lần đăng.
+                </p>
+            </div>
+            <div>
+                <div class="text-2xl mb-2">📅</div>
+                <b>Đăng bài nhất quán</b>
+                <p class="text-gray-600 mt-2">
+                    Duy trì lịch đăng đều đặn để dễ đánh giá hiệu quả.
+                </p>
+            </div>
+            <div>
+                <div class="text-2xl mb-2">🎯</div>
+                <b>Ưu tiên chất lượng</b>
+                <p class="text-gray-600 mt-2">
+                    Nội dung tốt vẫn quan trọng hơn việc chỉ chọn đúng giờ.
+                </p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-white border-t text-center text-sm text-gray-500 py-6 mt-8">
+    Công cụ tối ưu thời gian đăng bài mạng xã hội miễn phí
+</footer>
+
+<script>
+    const days = [
+        "Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư",
+        "Thứ năm", "Thứ sáu", "Thứ bảy"
+    ];
+
+    const shortDays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+
+    const zones = [
+        "Asia/Ho_Chi_Minh",
+        "Asia/Bangkok",
+        "Asia/Singapore",
+        "Asia/Tokyo",
+        "Asia/Seoul",
+        "Asia/Shanghai",
+        "Asia/Kolkata",
+        "Europe/London",
+        "Europe/Paris",
+        "Europe/Berlin",
+        "America/New_York",
+        "America/Chicago",
+        "America/Denver",
+        "America/Los_Angeles",
+        "Australia/Sydney",
+        "Pacific/Auckland",
+        "UTC"
+    ];
+
+    const platformData = {
+        instagram: {
+            name: "Instagram",
+            icon: "📸",
+            windows: [
+                { days: [2, 3, 4], start: 9, end: 11, weight: 10 },
+                { days: [1, 5], start: 11, end: 13, weight: 7 },
+                { days: [2, 3, 4], start: 17, end: 19, weight: 8 },
+                { days: [0, 6], start: 10, end: 12, weight: 5 }
+            ]
+        },
+        facebook: {
+            name: "Facebook",
+            icon: "🌐",
+            windows: [
+                { days: [2, 3, 4], start: 9, end: 12, weight: 10 },
+                { days: [1, 5], start: 9, end: 11, weight: 8 },
+                { days: [2, 3, 4], start: 13, end: 15, weight: 8 },
+                { days: [6], start: 10, end: 12, weight: 5 }
+            ]
+        },
+        tiktok: {
+            name: "TikTok",
+            icon: "🎵",
+            windows: [
+                { days: [1, 2, 3, 4, 5, 6, 0], start: 7, end: 9, weight: 7 },
+                { days: [1, 2, 3, 4, 5, 6, 0], start: 19, end: 23, weight: 10 },
+                { days: [4, 5], start: 17, end: 20, weight: 10 }
+            ]
+        },
+        x: {
+            name: "Twitter / X",
+            icon: "𝕏",
+            windows: [
+                { days: [1, 2, 3, 4], start: 8, end: 10, weight: 10 },
+                { days: [1, 2, 3, 4], start: 12, end: 13, weight: 8 },
+                { days: [5], start: 8, end: 10, weight: 6 }
+            ]
+        },
+        linkedin: {
+            name: "LinkedIn",
+            icon: "💼",
+            windows: [
+                { days: [2, 3], start: 7, end: 9, weight: 10 },
+                { days: [1, 2, 3, 4], start: 12, end: 13, weight: 9 },
+                { days: [2, 3], start: 17, end: 18, weight: 7 },
+                { days: [1, 4], start: 8, end: 10, weight: 7 }
+            ]
+        },
+        youtube: {
+            name: "YouTube",
+            icon: "▶️",
+            windows: [
+                { days: [4, 5, 6], start: 12, end: 16, weight: 10 },
+                { days: [1, 2, 3, 4, 5, 6, 0], start: 19, end: 22, weight: 9 },
+                { days: [2, 3], start: 15, end: 17, weight: 7 }
+            ]
+        }
+    };
+
+    let generatedText = "";
+    let heatData = [];
+
+    // Khởi tạo danh sách múi giờ
+    function initZones() {
+        const detected =
+            Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Ho_Chi_Minh";
+
+        ["myZone", "audienceZone", "secondZone"].forEach(id => {
+            const select = document.getElementById(id);
+            select.innerHTML = "";
+
+            zones.forEach(zone => {
+                const option = document.createElement("option");
+                option.value = zone;
+                option.textContent = zone.replaceAll("_", " ");
+                select.appendChild(option);
+            });
+        });
+
+        document.getElementById("myZone").value =
+            zones.includes(detected) ? detected : "Asia/Ho_Chi_Minh";
+
+        document.getElementById("audienceZone").value = "Asia/Ho_Chi_Minh";
+        document.getElementById("secondZone").value = "America/New_York";
+    }
+
+    document.getElementById("useSecond").addEventListener("change", function () {
+        document.getElementById("secondZoneArea").classList.toggle(
+            "hidden", !this.checked
+        );
+    });
+
+    document.getElementById("secondShare").addEventListener("input", function () {
+        document.getElementById("secondPercent").textContent =
+            this.value + "%";
+    });
+
+    function getSelectedPlatforms() {
+        return [...document.querySelectorAll(
+            'input[name="platform"]:checked'
+        )].map(input => input.value);
+    }
+
+    function loadExample(type) {
+        document.querySelectorAll('input[name="platform"]').forEach(input => {
+            input.checked = input.value === type;
+        });
+
+        document.getElementById("audienceZone").value =
+            type === "linkedin" ? "Europe/London" :
+            type === "youtube" ? "Asia/Tokyo" :
+            type === "instagram" ? "America/New_York" :
+            "Asia/Ho_Chi_Minh";
+
+        document.getElementById("myZone").value = "Asia/Ho_Chi_Minh";
+        document.getElementById("postsPerWeek").value = "3";
+
+        document.getElementById("resultSection").classList.add("hidden");
+    }
+
+    // Lấy các thành phần ngày giờ theo múi giờ
+    function getZonedParts(date, zone) {
+        const parts = new Intl.DateTimeFormat("en-GB", {
+            timeZone: zone,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            weekday: "short",
+            hourCycle: "h23"
+        }).formatToParts(date);
+
+        const result = {};
+        parts.forEach(part => {
+            result[part.type] = part.value;
+        });
+
+        const weekdayMap = {
+            Sun: 0, Mon: 1, Tue: 2, Wed: 3,
+            Thu: 4, Fri: 5, Sat: 6
+        };
+
+        return {
+            year: Number(result.year),
+            month: Number(result.month),
+            day: Number(result.day),
+            hour: Number(result.hour),
+            minute: Number(result.minute),
+            weekday: weekdayMap[result.weekday]
+        };
+    }
+
+    // Chuyển giờ địa phương thành thời điểm UTC
+    function wallTimeToDate(year, month, day, hour, zone) {
+        const target = Date.UTC(year, month - 1, day, hour, 0);
+        let guess = target;
+
+        for (let i = 0; i < 4; i++) {
+            const actual = getZonedParts(new Date(guess), zone);
+            const actualAsUTC = Date.UTC(
+                actual.year, actual.month - 1, actual.day,
+                actual.hour, actual.minute
+            );
+
+            guess += target - actualAsUTC;
+        }
+
+        return new Date(guess);
+    }
+
+    function getScore(day, hour, platform) {
+        let score = 1.5;
+
+        platform.windows.forEach(window => {
+            if (window.days.includes(day) &&
+                hour >= window.start && hour < window.end) {
+                score = Math.max(score, window.weight);
+            }
+        });
+
+        // Các giờ rất khuya thường có mức tương tác thấp
+        if (hour >= 0 && hour < 6) score *= 0.35;
+
+        return Math.min(10, score);
+    }
+
+    function getLocalScore(date, platform, audienceZone,
+        secondZone, secondWeight) {
+
+        const first = getZonedParts(date, audienceZone);
+        let score = getScore(first.weekday, first.hour, platform);
+
+        if (secondZone && secondWeight > 0) {
+            const second = getZonedParts(date, secondZone);
+            const secondScore = getScore(
+                second.weekday, second.hour, platform
+            );
+
+            score = score * (1 - secondWeight) +
+                secondScore * secondWeight;
+        }
+
+        return score;
+    }
+
+    function getMonday(dateParts) {
+        const date = new Date(Date.UTC(
+            dateParts.year, dateParts.month - 1, dateParts.day
+        ));
+
+        const weekday = date.getUTCDay();
+        const diff = weekday === 0 ? -6 : 1 - weekday;
+
+        date.setUTCDate(date.getUTCDate() + diff);
+        return date;
+    }
+
+    function formatHour(hour) {
+        return String(hour).padStart(2, "0") + ":00";
+    }
+
+    function formatDate(date, zone) {
+        return new Intl.DateTimeFormat("vi-VN", {
+            timeZone: zone,
+            weekday: "long",
+            day: "2-digit",
+            month: "2-digit"
+        }).format(date);
+    }
+
+    function getScoreLabel(score) {
+        if (score >= 9) return "Rất tốt";
+        if (score >= 7) return "Tốt";
+        if (score >= 5) return "Khá";
+        return "Thấp";
+    }
+
+    function heatColor(score) {
+        if (score >= 9) return "#1e3a8a";
+        if (score >= 7) return "#2563eb";
+        if (score >= 5) return "#93c5fd";
+        if (score >= 3) return "#dbeafe";
+        return "#f1f5f9";
+    }
+
+    function textColor(score) {
+        return score >= 7 ? "#ffffff" : "#334155";
+    }
+
+    function generateSchedule() {
+        const platforms = getSelectedPlatforms();
+
+        if (platforms.length === 0) {
+            alert("Vui lòng chọn ít nhất một nền tảng.");
+            return;
+        }
+
+        const audienceZone =
+            document.getElementById("audienceZone").value;
+
+        const myZone = document.getElementById("myZone").value;
+
+        const useSecond =
+            document.getElementById("useSecond").checked;
+
+        const secondZone = useSecond
+            ? document.getElementById("secondZone").value
+            : null;
+
+        const secondWeight = useSecond
+            ? Number(document.getElementById("secondShare").value) / 100
+            : 0;
+
+        const posts = Number(
+            document.getElementById("postsPerWeek").value
+        );
+
+        const now = new Date();
+        const localNow = getZonedParts(now, myZone);
+        const monday = getMonday(localNow);
+
+        const baseMonday = new Date(Date.UTC(
+            monday.getUTCFullYear(),
+            monday.getUTCMonth(),
+            monday.getUTCDate()
+        ));
+
+        const allRecommendations = [];
+        heatData = [];
+
+        // Tính bản đồ nhiệt 7 ngày x 24 giờ theo giờ người đăng
+        for (let day = 0; day < 7; day++) {
+            const row = [];
+
+            for (let hour = 0; hour < 24; hour++) {
+                const date = new Date(baseMonday);
+                date.setUTCDate(date.getUTCDate() + day);
+
+                const actualDate = wallTimeToDate(
+                    date.getUTCFullYear(),
+                    date.getUTCMonth() + 1,
+                    date.getUTCDate(),
+                    hour,
+                    myZone
+                );
+
+                let totalScore = 0;
+
+                platforms.forEach(platformId => {
+                    const platform = platformData[platformId];
+
+                    totalScore += getLocalScore(
+                        actualDate,
+                        platform,
+                        audienceZone,
+                        secondZone,
+                        secondWeight
+                    );
+                });
+
+                const averageScore = totalScore / platforms.length;
+
+                row.push({
+                    day,
+                    hour,
+                    score: averageScore,
+                    date: actualDate
+                });
+            }
+
+            heatData.push(row);
+        }
+
+        // Tìm giờ tốt nhất riêng cho từng nền tảng
+        platforms.forEach(platformId => {
+            const platform = platformData[platformId];
+            const candidates = [];
+
+            for (let day = 0; day < 7; day++) {
+                for (let hour = 0; hour < 24; hour++) {
+                    const date = new Date(baseMonday);
+                    date.setUTCDate(date.getUTCDate() + day);
+
+                    const actualDate = wallTimeToDate(
+                        date.getUTCFullYear(),
+                        date.getUTCMonth() + 1,
+                        date.getUTCDate(),
+                        hour,
+                        myZone
+                    );
+
+                    const score = getLocalScore(
+                        actualDate,
+                        platform,
+                        audienceZone,
+                        secondZone,
+                        secondWeight
+                    );
+
+                    candidates.push({
+                        day,
+                        hour,
+                        date: actualDate,
+                        score
+                    });
+                }
+            }
+
+            candidates.sort((a, b) => b.score - a.score);
+
+            // Chọn giờ đăng cách nhau tối thiểu 3 giờ
+            const selected = [];
+
+            for (const candidate of candidates) {
+                const separated = selected.every(item => {
+                    const diff = Math.abs(
+                        candidate.date.getTime() - item.date.getTime()
+                    );
+
+                    return diff >= 3 * 60 * 60 * 1000;
+                });
+
+                if (separated) {
+                    selected.push(candidate);
+                }
+
+                if (selected.length >= posts) break;
+            }
+
+            selected.sort((a, b) => a.date - b.date);
+
+            allRecommendations.push({
+                platform,
+                items: selected
+            });
+        });
+
+        renderRecommendations(allRecommendations, myZone);
+        renderHeatmap();
+        renderSummary(platforms, posts, audienceZone, myZone, secondZone);
+
+        document.getElementById("resultSection").classList.remove("hidden");
+
+        document.getElementById("resultSection").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    function renderRecommendations(recommendations, zone) {
+        const container = document.getElementById("recommendations");
+        container.innerHTML = "";
+
+        generatedText = "LỊCH ĐĂNG BÀI ĐỀ XUẤT\n\n";
+
+        recommendations.forEach(group => {
+            const card = document.createElement("div");
+            card.className = "border rounded-xl p-4";
+
+            const title = document.createElement("h4");
+            title.className = "font-bold text-lg mb-3";
+            title.textContent =
+                group.platform.icon + " " + group.platform.name;
+
+            card.appendChild(title);
+
+            group.items.forEach((item, index) => {
+                const row = document.createElement("div");
+                row.className =
+                    "flex flex-wrap justify-between items-center gap-3 py-3 border-t";
+
+                const left = document.createElement("div");
+
+                const date = document.createElement("p");
+                date.className = "font-medium";
+                date.textContent = formatDate(item.date, zone);
+
+                const time = document.createElement("p");
+                time.className = "text-sm text-gray-500 mt-1";
+                time.textContent =
+                    "Đăng lúc " + formatHour(item.hour) +
+                    " · Tuần " + (index + 1);
+
+                left.appendChild(date);
+                left.appendChild(time);
+
+                const right = document.createElement("div");
+                right.className = "text-right";
+
+                const score = document.createElement("p");
+                score.className = "font-bold text-blue-700";
+                score.textContent = item.score.toFixed(1) + "/10";
+
+                const label = document.createElement("p");
+                label.className = "text-xs text-gray-500";
+                label.textContent = getScoreLabel(item.score);
+
+                right.appendChild(score);
+                right.appendChild(label);
+
+                row.appendChild(left);
+                row.appendChild(right);
+                card.appendChild(row);
+
+                generatedText +=
+                    group.platform.name + " - " +
+                    formatDate(item.date, zone) + " - " +
+                    formatHour(item.hour) + " - Điểm " +
+                    item.score.toFixed(1) + "/10\n";
+            });
+
+            container.appendChild(card);
+            generatedText += "\n";
+        });
+    }
+
+    function renderHeatmap() {
+        const container = document.getElementById("heatmap");
+        container.innerHTML = "";
+
+        const table = document.createElement("table");
+        table.className = "w-full border-separate border-spacing-1 text-xs";
+
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+
+        const empty = document.createElement("th");
+        empty.textContent = "Ngày";
+        empty.className = "p-1 text-left";
+        headerRow.appendChild(empty);
+
+        for (let hour = 0; hour < 24; hour++) {
+            const th = document.createElement("th");
+            th.textContent = hour % 3 === 0 ? hour + "h" : "";
+            th.className = "font-normal text-gray-500";
+            headerRow.appendChild(th);
+        }
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+
+        heatData.forEach((row, day) => {
+            const tr = document.createElement("tr");
+
+            const dayCell = document.createElement("th");
+            dayCell.className = "text-left pr-2 font-medium";
+            dayCell.textContent = shortDays[
+                getZonedParts(row[12].date,
+                    document.getElementById("myZone").value).weekday
+            ];
+            tr.appendChild(dayCell);
+
+            row.forEach(item => {
+                const td = document.createElement("td");
+
+                const cell = document.createElement("button");
+                cell.className = "heat-cell w-full";
+                cell.style.background = heatColor(item.score);
+                cell.style.color = textColor(item.score);
+                cell.title =
+                    formatDate(item.date,
+                        document.getElementById("myZone").value) +
+                    " " + formatHour(item.hour) +
+                    " - " + item.score.toFixed(1) + "/10";
+
+                cell.textContent = item.score >= 8 ? "●" :
+                    item.score >= 5 ? "•" : "";
+
+                cell.addEventListener("click", () => {
+                    const info = document.getElementById("heatInfo");
+                    info.classList.remove("hidden");
+                    info.textContent =
+                        formatDate(item.date,
+                            document.getElementById("myZone").value) +
+                        " · " + formatHour(item.hour) +
+                        " · Điểm tương tác dự kiến: " +
+                        item.score.toFixed(1) + "/10 (" +
+                        getScoreLabel(item.score) + ").";
+                });
+
+                td.appendChild(cell);
+                tr.appendChild(td);
+            });
+
+            tbody.appendChild(tr);
+        });
+
+        table.appendChild(tbody);
+        container.appendChild(table);
+    }
+
+    function renderSummary(platforms, posts,
+        audienceZone, myZone, secondZone) {
+
+        const container = document.getElementById("summaryInfo");
+
+        let text =
+            "Bạn đã chọn " + platforms.length +
+            " nền tảng mạng xã hội. ";
+
+        text += "Tần suất dự kiến: " + posts +
+            " bài mỗi tuần cho mỗi nền tảng. ";
+
+        text += "Múi giờ khán giả chính: " +
+            audienceZone + ". ";
+
+        text += "Múi giờ người đăng: " + myZone + ". ";
+
+        if (secondZone) {
+            text += "Múi giờ khán giả thứ hai: " +
+                secondZone + ". ";
+        }
+
+        text += "Các điểm số là mô hình tham khảo dựa trên những khung giờ " +
+            "tương tác tổng hợp, không phải dự báo chắc chắn về hiệu quả bài đăng.";
+
+        container.textContent = text;
+    }
+
+    function copySchedule() {
+        if (!generatedText) {
+            alert("Chưa có lịch đăng để sao chép.");
+            return;
+        }
+
+        navigator.clipboard.writeText(generatedText)
+            .then(() => alert("Đã sao chép lịch đăng bài!"))
+            .catch(() => alert("Không thể sao chép. Hãy thử lại."));
+    }
+
+    function resetForm() {
+        document.querySelectorAll('input[name="platform"]').forEach(input => {
+            input.checked = input.value === "instagram" ||
+                input.value === "facebook";
+        });
+
+        document.getElementById("audienceZone").value = "Asia/Ho_Chi_Minh";
+        document.getElementById("postsPerWeek").value = "3";
+        document.getElementById("useSecond").checked = false;
+        document.getElementById("secondZoneArea").classList.add("hidden");
+        document.getElementById("secondShare").value = 30;
+        document.getElementById("secondPercent").textContent = "30%";
+
+        generatedText = "";
+        heatData = [];
+
+        document.getElementById("resultSection").classList.add("hidden");
+    }
+
+    initZones();
+</script>
+
+</body>
+</html>
